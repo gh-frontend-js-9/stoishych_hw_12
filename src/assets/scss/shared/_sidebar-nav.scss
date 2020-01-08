@@ -1,0 +1,20 @@
+.main {
+  display: flex;
+}
+
+.sidebar {
+  height: 90vh;
+  width: 96px;
+  background-color: #2f3242;
+  box-shadow: 0 3px 80px rgba(23, 24, 32, 0.2);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar-nav__link {
+  margin-top: 35px;
+}
