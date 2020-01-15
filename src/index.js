@@ -3,7 +3,7 @@ import {login} from './scripts/login';
 import {signUp} from './scripts/registration';
 import {resetPassword} from "./scripts/reset-pass";
 import {validateEmail,validatePassword,validateName,validateRepeatPassword } from "./scripts/validator";
-import {createPageMessages} from "./scripts/create-pages/messages";
+import {createPageMessages, getAllThreadMessages, sendMessage} from "./scripts/create-pages/messages";
 import {createLoginPage} from "./scripts/create-pages/login";
 import {createSignUpPage} from "./scripts/create-pages/signup";
 import {createResetPage} from "./scripts/create-pages/reset-pass";
@@ -31,10 +31,31 @@ window.onload = async function () {
 
 if (window.location.href.match('messages.html')) {
     createPageMessages("messages-header", "messages-main");
+
+    localStorage.setItem("ifThreadAdded", "");
+
+    setTimeout(function () {
+        let conversationClick = document.getElementById("messages-user");
+        console.log(conversationClick);
+        if (conversationClick) {
+            conversationClick.addEventListener("click", function(click) {
+                click.preventDefault();
+                getAllThreadMessages();
+            });
+        }
+    }, 200);
+
+    setTimeout(function () {
+        let sendButton = document.getElementById("messages-chat__send");
+        console.log(sendButton);
+        if(sendButton) {
+            sendButton.addEventListener("click", function(click) {
+                click.preventDefault();
+                sendMessage();
+            })
+        }
+    })
 }
-/*window.onload = function () {
-    createPageMessages("messages-header", "messages-main");
-};*/
 
 if (window.location.href.match('login.html')) {
     //creating SignIn page
@@ -105,24 +126,3 @@ if (window.location.href.match('reset-pass.html')) {
         });
     }
 }
-
-async function getDataUser () {
-    /*var myHeaders = new Headers();
-    myHeaders.append("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTEzMDk1MjQ0ZTI0NTgyYjQ2MDUxN2MiLCJpYXQiOjE1NzgzMDk3MjN9.pTHETno3kAcGiVtMD9RLd7QK4RT_6kIquJuWaHgb65A");
-
-    var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-    };
-
-    fetch("http://localhost:3000/api/threads", requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));*/
-
-    fetch("http://localhost:3000/api/users/")
-        .then(response => console.log(response.text()));
-}
-
-getDataUser();

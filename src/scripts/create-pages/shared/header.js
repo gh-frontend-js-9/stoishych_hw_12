@@ -42,7 +42,7 @@ export function createHeader (headerId) {
 
             let headerUser = document.createElement("img");
             headerUser.setAttribute("class", "header-menu__user");
-            headerUser.setAttribute("src", "../assets/images/user-1.png");
+            headerUser.setAttribute("src", "../assets/images/users-avatar/photo-1.png");
             headerDiv.appendChild(headerUser);
 
             let headerUserArrow = document.createElement("span");
