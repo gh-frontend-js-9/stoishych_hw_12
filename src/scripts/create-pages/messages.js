@@ -106,12 +106,12 @@ export function createPageMessages (headerMessages, mainMessages) {
 
 
 
-    const createMessagesUsers = (name, date, message) => {
+    const createMessagesUsers = (name, date, message, uniqueId) => {
 
         //creating wrapper for user
         const messagesUserWrapper = document.createElement("div");
-        messagesUserWrapper.setAttribute("class", "messages-user");
-        messagesUserWrapper.setAttribute("id", "messages-user");
+        messagesUserWrapper.setAttribute("class", `messages-user`);
+        messagesUserWrapper.setAttribute("id", uniqueId);
         messagesUsersWrapper.appendChild(messagesUserWrapper);
 
         //creating wrapper for user avatar, name, time
@@ -159,34 +159,34 @@ export function createPageMessages (headerMessages, mainMessages) {
             redirect: 'follow'
         };
 
-        let response = await fetch("http://localhost:3000/api/threads", requestOptions);
+        let response = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/threads", requestOptions);
         let threads = await response.json();
         console.log(threads);
 
-
-
+        // TODO: parse messages and get info about last message and date. Sort all threads.
+        
+        let name;
+        let message;
+        let date, newSplitString, newDate;
         for (let i = 0; i < threads.length; i++) {
-            let name;
             for (let j = 0; j < threads[i].users.length; j++) {
-                if(threads[i].users[j]._id !== threads[i].last_message.user) {
+
+                if (threads[i].users[j]._id !== localStorage.currentUser) {
                     name = threads[i].users[j].name;
                 }
+                message = "";
+                date = threads[i].updated_at.slice(0,10);
+                newSplitString = new Date(date);
+                newDate = newSplitString.getDate() + " " + months[newSplitString.getMonth()];
+
             }
-
-            let message = threads[i].last_message.body;
-            let date = threads[i].last_message.created_at.slice(0,10);
-            let newSplitString = new Date(date);
-            let newDate = newSplitString.getDate() + " " + months[newSplitString.getMonth()];
-            createMessagesUsers(name, newDate, message);
-
-
+            let uniqueId = threads[i]._id;
+            createMessagesUsers(name, newDate, message, uniqueId);
+            localStorage.setItem(`_id${i}`, threads[i]._id);
         }
-
-        localStorage.setItem("_id", threads[0]._id);
-
     }
 
-    getAllThreads();
+    setTimeout(getAllThreads, 100);
 
     // new conversation button
     const messagesNewConversationDiv = document.createElement("div");
@@ -195,6 +195,7 @@ export function createPageMessages (headerMessages, mainMessages) {
 
     const messagesNewConversation = document.createElement("button");
     messagesNewConversation.setAttribute("class", "messages-conversation__button");
+    messagesNewConversation.setAttribute("id", "messages-conversation__button");
     messagesNewConversation.innerHTML = "New conversation";
 
     messagesNewConversationDiv.appendChild(messagesNewConversation);
@@ -211,20 +212,12 @@ export function createPageMessages (headerMessages, mainMessages) {
     messagesChat.setAttribute("id", "messages-chatMessages");// a little bit bad naming, I know but nothing else I can't imagine :D
     messagesWindow.appendChild(messagesChat);
 
+    const senderInformation = document.createElement("section");
+    senderInformation.setAttribute("class", "messages-senderinfo custom-scrollbar");
+    senderInformation.setAttribute("id", "messages-senderinfo");
+    messagesChatWindow.appendChild(senderInformation);
 
-    //messages from sender
 
-
-    //change it when api will be ready
-    /*const createMessages = () => {
-        /!*createSenderMessages(messagesSender.messages[0]);
-        createReceiverMessages(messagesReceiver.messages[0]);
-        createSenderMessages(messagesSender.messages[1]);
-        createReceiverMessages(messagesReceiver.messages[1]);
-        createReceiverMessages(messagesReceiver.messages[2]);*!/
-    };
-
-    createMessages();*/
 
     //wrapper for input and button
     //input for messages
@@ -244,6 +237,45 @@ export function createPageMessages (headerMessages, mainMessages) {
     inputMessageButton.setAttribute("class", "messages-chat__send");
     inputMessageButton.setAttribute("id", "messages-chat__send");
     inputMessageWrapper.appendChild(inputMessageButton);
+
+    getAllUsers();
+
+
+}
+
+async function getAllUsers () {
+
+    let requestOptions = {
+        method: 'GET',
+        headers: {
+            "x-access-token": localStorage.token
+        },
+        redirect: 'follow'
+    };
+
+    fetch("https://geekhub-frontend-js-9.herokuapp.com/api/users/all", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+}
+
+export async function createThread () {
+    let id = prompt("Put user id to start thread");
+    let userId = JSON.stringify({"user":{"_id":`${id}`}});
+
+    let requestOptions = {
+        method: 'POST',
+        headers: {
+            'x-access-token': localStorage.token,
+            'Content-Type': 'application/json'
+        },
+        body: userId,
+        redirect: 'follow'
+    };
+
+    let response = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/threads", requestOptions);
+    let result = await response.json();
+    console.log(result);
 
 }
 
@@ -265,7 +297,7 @@ export async function sendMessage () {
 
     createReceiverMessages(message, newTime);
 
-    let response = await fetch("http://localhost:3000/api/threads/messages", {
+    let response = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/threads/messages", {
         method: 'POST',
         headers: {
             'Authorization': localStorage.token,
@@ -278,7 +310,7 @@ export async function sendMessage () {
 
 }
 
-export async function getAllThreadMessages () {
+export async function getAllThreadMessages (threadId) {
     let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',	'November', 'December'];
     let requestOptions = {
         method: 'GET',
@@ -288,72 +320,77 @@ export async function getAllThreadMessages () {
         redirect: 'follow'
     };
 
-    let id = localStorage._id;
-    let response = await fetch(`http://localhost:3000/api/threads/messages/${id}`, requestOptions);
+    let id = threadId;
+    localStorage._id = threadId;
+    let response = await fetch(`https://geekhub-frontend-js-9.herokuapp.com/api/threads/messages/${id}`, requestOptions);
     let threadMessages = await response.json();
 
 
-    let receiverId, senderId;
-    for (let i = 0; i < threadMessages.users.length; i++) {
-        if (threadMessages.users[i].me) {
-             receiverId = threadMessages.users[i]._id;
-        } else {
-             senderId = threadMessages.users[i]._id;
-        }
-    }
-
-    if (localStorage.ifThreadAdded !== id) {
-
-
-        for (let i = threadMessages.messages.length - 1; i >= 0; i--) {
-                if (receiverId === threadMessages.messages[i].user) {
-
-                        let text = threadMessages.messages[i].body;
-                        let time = threadMessages.messages[i].created_at;
-                        time = new Date(time);
-                        let newTime = time.getDate() + " " + months[time.getMonth()] + " " + time.getFullYear() + ", " + time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-
-                        createReceiverMessages(text, newTime);
-                } if (senderId === threadMessages.messages[i].user) {
-                        let text = threadMessages.messages[i].body;
-                        let time = threadMessages.messages[i].created_at;
-
-                        time = new Date(time);
-                        let newTime = time.getDate() + " " + months[time.getMonth()] + " " + time.getFullYear() + ", " + time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-
-                        createSenderMessages(text, newTime);
-                }
+    console.log(threadMessages);
+    if (threadMessages.length !== 0) {
+        let receiverId, senderId;
+        for (let i = 0; i < threadMessages.length; i++) {
+            if (threadMessages[i].user._id === localStorage.currentUser) {
+                receiverId = localStorage.currentUser;
+            } else {
+                senderId = threadMessages[i].user._id;
             }
-        for (let i = 0; i < threadMessages.users.length; i++) {
-            if(!threadMessages.users[i].me) {
-                document.querySelector(".messages-chat__inputwrap").style.display = "flex";
+        }
 
-                let name = threadMessages.users[i].name;
-                let email = threadMessages.users[i].email;
-                let position = threadMessages.users[i].position;
-                let description = threadMessages.users[i].description;
-                let phone = threadMessages.users[i].phone;
-                let address = threadMessages.users[i].address;
-                let organization = threadMessages.users[i].organization;
+        for (let i = 0; i < threadMessages.length; i++) {
+            if (receiverId === threadMessages[i].user._id) {
+
+                let text = threadMessages[i].body;
+                let time = threadMessages[i].created_at;
+                time = new Date(time);
+                let newTime = time.getDate() + " " + months[time.getMonth()] + " " + time.getFullYear() + ", " + time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+
+                createReceiverMessages(text, newTime);
+            } if (senderId === threadMessages[i].user._id) {
+                let text = threadMessages[i].body;
+                let time = threadMessages[i].created_at;
+
+                time = new Date(time);
+                let newTime = time.getDate() + " " + months[time.getMonth()] + " " + time.getFullYear() + ", " + time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+
+                createSenderMessages(text, newTime);
+            }
+        }
+        for (let i = 0; i < threadMessages.length; i++) {
+            if(senderId === threadMessages[i].user._id) {
+
+                let name = threadMessages[i].user.name;
+                let email = "";
+                let position = "";
+                let description = "";
+                let phone = "";
+                let address = "";
+                let organization = "";
 
                 createSenderInfo(name, email, position, description, phone, address, organization);
+                break;
             }
         }
+        document.querySelector(".messages-chat__inputwrap").style.display = "flex";
 
-        localStorage.ifThreadAdded = id;
+    }
+}
+
+export function clearThread (id) {
+    let threadMessages = document.getElementById(id);
+    let child = threadMessages.lastElementChild;
+    while (child) {
+        threadMessages.removeChild(child);
+        child = threadMessages.lastElementChild;
     }
 }
 
 function createSenderInfo (name, email, position, description, phone, adress, organization) {
-    const messagesChatWindow = document.getElementById("messages-wrapper");
-    const senderInformation = document.createElement("section");
-    senderInformation.setAttribute("class", "messages-senderinfo custom-scrollbar");
-    messagesChatWindow.appendChild(senderInformation);
-
+    const senderInformation = document.getElementById("messages-senderinfo");
     //avatar
     const senderInfoAvatar = document.createElement("img");
     senderInfoAvatar.setAttribute("class", "messages-senderinfo__avatar");
-    senderInfoAvatar.setAttribute("src", "../assets/images/users-avatar/photo-3.png");
+    senderInfoAvatar.setAttribute("src", "../assets/images/users-avatar/lsize-avatar.png");
     senderInformation.appendChild(senderInfoAvatar);
 
     //Name
@@ -454,6 +491,7 @@ function createSenderMessages (text, time) {
 function createReceiverMessages (text, time) {
     const messagesChat = document.getElementById("messages-chatMessages");
 
+
     const receiverMessages = document.createElement("div");
     receiverMessages.setAttribute("class", "messages-receiver");
     messagesChat.appendChild(receiverMessages);
@@ -481,6 +519,8 @@ function createReceiverMessages (text, time) {
     receiverAvatar.setAttribute("class", "messages-receiver__avatar");
     receiverAvatar.setAttribute("src", "../assets/images/users-avatar/photo-1.png");
     receiverMessages.appendChild(receiverAvatar);
+
+    messagesChat.scrollTop = messagesChat.scrollHeight;
 
 }
 

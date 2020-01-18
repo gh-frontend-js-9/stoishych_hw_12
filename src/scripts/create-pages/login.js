@@ -34,7 +34,7 @@ export function createLoginPage (headerLogin, mainLogin) {
     //creating form
 
     const loginForm = document.createElement("form");
-    loginForm.setAttribute("action", "http://localost:3000/api/users/login");
+    loginForm.setAttribute("action", "https://geekhub-frontend-js-9.herokuapp.com/api/users/login");
     loginForm.setAttribute("method", "post");
     loginForm.setAttribute("id", "login-form");
     loginForm.setAttribute("class", "authorization-form");

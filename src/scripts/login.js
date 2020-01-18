@@ -15,12 +15,31 @@ export async function login(email,password) {
         body: JSON.stringify(user)
     };
 
-    let response = await fetch("http://localhost:3000/api/users/login", sendData);
+    let response = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/users/login/", sendData);
+
     console.log(response);
     if (response.status === 200) {
-        localStorage.setItem('token', response.headers.get('x-auth-token'));
-        alert("You successfully logined");
+        console.log(response.headers.get('X-Auth-Token'));
+        localStorage.setItem('token', response.headers.get('X-Auth-Token'));
+        getCurrentUser();
     } else alert ("Login or password is incorrect, try again")
+}
+
+async function getCurrentUser () {
+    let requestOptions = {
+        method: 'GET',
+        headers: {
+            "x-access-token": localStorage.token
+        },
+        redirect: 'follow'
+    };
+
+    let response = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/users/", requestOptions);
+    let result = await response.json();
+    console.log(result._id);
+    localStorage.setItem("currentUser", `${result._id}`);
+
+    window.location.href = "messages.html";
 }
 
 

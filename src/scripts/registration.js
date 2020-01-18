@@ -16,7 +16,7 @@ export async function signUp(email,password,name) {
         body: JSON.stringify(user)
     };
 
-    let response = await fetch("http://localhost:3000/api/users/", sendData);
+    let response = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/users/", sendData);
 
     if (response.status === 200) {
         alert("You created account");

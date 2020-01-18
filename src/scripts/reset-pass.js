@@ -17,6 +17,6 @@ export async function resetPassword(password,confirmationPassword,email) {
         body: JSON.stringify(user)
     };
 
-    let response = await fetch("http://localhost:3000/api/users/reset_password", sendData);
+    let response = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/users/reset_password", sendData);
     console.log(response);
 }

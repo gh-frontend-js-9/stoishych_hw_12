@@ -34,7 +34,7 @@ export function createResetPage (resetHeader, resetMain) {
     //creating form
 
     const resetForm = document.createElement("form");
-    resetForm.setAttribute("action", "http://localhost:3000/api/users/reset_password");
+    resetForm.setAttribute("action", "https://geekhub-frontend-js-9.herokuapp.com/api/users/reset_password");
     resetForm.setAttribute("method", "post");
     resetForm.setAttribute("id", "reset-form");
     resetForm.setAttribute("class", "authorization-form");

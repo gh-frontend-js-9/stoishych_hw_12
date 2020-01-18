@@ -50,6 +50,13 @@ export function createHeader (headerId) {
             headerUserArrow.setAttribute("src", "../assets/images/arrowbottom.png");
             headerDiv.appendChild(headerUserArrow);
 
+            let headerUserLogOut = document.createElement("a");
+            headerUserLogOut.setAttribute("id", "header-menu__logout");
+            headerUserLogOut.setAttribute("class", "header-menu__login");
+            headerUserLogOut.innerHTML = "Log Out";
+            headerDiv.appendChild(headerUserLogOut);
+
+
         } else {
 
             let headerLogin = document.createElement("a");
@@ -59,50 +66,17 @@ export function createHeader (headerId) {
             headerDiv.appendChild(headerLogin);
         }
 
-
-        /*if(ifLogined === 200) {
-            let headerUser = document.createElement("img");
-            headerUser.setAttribute("class", "header-menu__user");
-            headerUser.setAttribute("src", "../assets/images/user-1.png");
-            headerDiv.appendChild(headerUser);
-
-            let headerUserArrow = document.createElement("span");
-            headerUserArrow.setAttribute("class", "header-menu__arrow");
-            headerUserArrow.setAttribute("src", "../assets/images/arrowbottom.png");
-            headerDiv.appendChild(headerUserArrow);
-        } else {
-
-        }*/
-
-
-
-
     } else console.log ("write valid headerId")
 }
 
 export async function setAuthToken() {
-    let response = await fetch('http://localhost:3000/api/users/current', {
+    let response = await fetch('https://geekhub-frontend-js-9.herokuapp.com/api/users/', {
         headers: {
             "x-access-token": localStorage.token
         }
     });
 
+    console.log(response);
+
     return response.status;
 }
-
-/*
-async function changeHeaderLogin () {
-    const headerDiv = document.getElementById("header-menu");
-    const headerLogin = document.querySelector(".header-menu__login");
-    headerLogin.remove();
-
-    let headerUser = document.createElement("img");
-    headerUser.setAttribute("class", "header-menu__user");
-    headerUser.setAttribute("src", "../assets/images/user-1.png");
-    headerDiv.appendChild(headerUser);
-
-    let headerUserArrow = document.createElement("span");
-    headerUserArrow.setAttribute("class", "header-menu__arrow");
-    headerUserArrow.setAttribute("src", "../assets/images/arrowbottom.png");
-    headerDiv.appendChild(headerUserArrow);
-}*/

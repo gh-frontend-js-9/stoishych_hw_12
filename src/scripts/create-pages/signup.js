@@ -33,7 +33,7 @@ export function createSignUpPage (headerSignUp, mainSignUp) {
     //creating form
 
     const signUpForm = document.createElement("form");
-    signUpForm.setAttribute("action", "http://localost:3000/api/users/");
+    signUpForm.setAttribute("action", "https://geekhub-frontend-js-9.herokuapp.com/api/users/");
     signUpForm.setAttribute("method", "post");
     signUpForm.setAttribute("id", "signup-form");
     signUpForm.setAttribute("class", "authorization-form");

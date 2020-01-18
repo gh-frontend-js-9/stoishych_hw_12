@@ -3,14 +3,20 @@ import {login} from './scripts/login';
 import {signUp} from './scripts/registration';
 import {resetPassword} from "./scripts/reset-pass";
 import {validateEmail,validatePassword,validateName,validateRepeatPassword } from "./scripts/validator";
-import {createPageMessages, getAllThreadMessages, sendMessage} from "./scripts/create-pages/messages";
+import {
+    clearThread,
+    createPageMessages,
+    createThread,
+    getAllThreadMessages,
+    sendMessage
+} from "./scripts/create-pages/messages";
 import {createLoginPage} from "./scripts/create-pages/login";
 import {createSignUpPage} from "./scripts/create-pages/signup";
 import {createResetPage} from "./scripts/create-pages/reset-pass";
 import {setAuthToken} from "./scripts/create-pages/shared/header";
 
 async function ifLogined() {
-    let response = await fetch('http://localhost:3000/api/users/current', {
+    let response = await fetch('https://geekhub-frontend-js-9.herokuapp.com/api/users/', {
         headers: {
             "x-access-token": localStorage.token
         }
@@ -32,26 +38,54 @@ window.onload = async function () {
 if (window.location.href.match('messages.html')) {
     createPageMessages("messages-header", "messages-main");
 
-    localStorage.setItem("ifThreadAdded", "");
-
     setTimeout(function () {
-        let conversationClick = document.getElementById("messages-user");
-        console.log(conversationClick);
-        if (conversationClick) {
-            conversationClick.addEventListener("click", function(click) {
+        let conversationClick = document.getElementsByClassName("messages-user");
+        for (let i = 0; i < conversationClick.length; i++) {
+            conversationClick[i].addEventListener("click", function(click) {
                 click.preventDefault();
-                getAllThreadMessages();
+                clearThread("messages-chatMessages");
+                clearThread("messages-senderinfo");
+                getAllThreadMessages(conversationClick[i].id);
             });
+        }
+    }, 500);
+
+    setTimeout(function() {
+        let logOut = document.getElementById("header-menu__logout");
+        if (logOut) {
+            logOut.addEventListener("click", function(click) {
+                click.preventDefault();
+                localStorage.clear();
+                window.location.href = "login.html";
+            })
         }
     }, 200);
 
     setTimeout(function () {
         let sendButton = document.getElementById("messages-chat__send");
-        console.log(sendButton);
+        let textArea = document.getElementById("messages-chat__textarea");
         if(sendButton) {
             sendButton.addEventListener("click", function(click) {
                 click.preventDefault();
                 sendMessage();
+                textArea.value = "";
+            });
+            textArea.addEventListener("keypress", function(e) {
+               if(e.key === "Enter") {
+                   e.preventDefault();
+                   sendMessage();
+                   textArea.value = "";
+               }
+            })
+        }
+    }, 100);
+
+    setTimeout(function () {
+        let startThreadBtn = document.getElementById("messages-conversation__button");
+        if (startThreadBtn) {
+            startThreadBtn.addEventListener("click", function (click) {
+                click.preventDefault();
+                createThread();
             })
         }
     })
@@ -73,6 +107,9 @@ if (window.location.href.match('login.html')) {
                 if(validatePassword(password,8,40)) {
                     login(email,password);
                     setAuthToken();
+                    /*/!*setTimeout(function () {
+                        window.location.href = "messages.html";
+                    }, *!/200);*/
                 }
             } else return false;
         });
