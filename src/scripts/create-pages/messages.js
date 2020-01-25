@@ -1,6 +1,7 @@
 import {createHeader} from "./shared/header";
 import {createSidebarNav} from "./shared/sidebarNav";
 import {createSelect, closeAllSelect} from "./shared/customSelect";
+import {HTMLRender} from "./createPageClass";
 
 export function createPageMessages (headerMessages, mainMessages) {
 
@@ -15,31 +16,44 @@ export function createPageMessages (headerMessages, mainMessages) {
     /*messages menu*/
 
     const main = document.getElementById("messages-main");
-    const messagesContainer = document.createElement("section");
-    messagesContainer.setAttribute("class", "messages-container");
-    const messagesMenu = document.createElement("section");
-    messagesMenu.setAttribute("class", "messages-menu");
-    const messagesLinks = document.createElement("div");
-    messagesLinks.setAttribute("class", "messages-links");
 
-
+    const messagesContainer = new HTMLRender({
+        tag: "section",
+        class: "messages-container"
+    }).createElement();
     main.appendChild(messagesContainer);
+
+    const messagesMenu = new HTMLRender({
+        tag: "section",
+        class: "messages-menu"
+    }).createElement();
     messagesContainer.appendChild(messagesMenu);
+
+    const messagesLinks = new HTMLRender({
+        tag: "div",
+        class: "messages-links"
+    }).createElement();
     messagesMenu.appendChild(messagesLinks);
 
     const messagesMenuLinks = (link, image, value) => {
-        const messagesMenuLink = document.createElement("a");
-        const messagesMenuImg = document.createElement("img");
-        const messagesMenuText = document.createElement("p");
 
-        messagesMenuLink.setAttribute("class", "messages-menu__link");
-        messagesMenuLink.setAttribute("href", link);
+        const messagesMenuLink = new HTMLRender({
+            tag: "a",
+            class: "messages-menu__link",
+            href: link
+        }).createElement();
 
-        messagesMenuImg.setAttribute("class", "messages-menu__img");
-        messagesMenuImg.setAttribute("src", image);
+        const messagesMenuImg = new HTMLRender({
+            tag: "img",
+            class: "messages-menu__img",
+            src: image
+        }).createElement();
 
-        messagesMenuText.setAttribute("class", "messages-menu__text");
-        messagesMenuText.innerHTML = value;
+        const messagesMenuText = new HTMLRender({
+            tag: "p",
+            class: "messages-menu__text",
+            text: value
+        }).createElement();
 
         messagesLinks.appendChild(messagesMenuLink);
         messagesMenuLink.appendChild(messagesMenuImg);
@@ -55,29 +69,37 @@ export function createPageMessages (headerMessages, mainMessages) {
        messagesMenuLinks(messagesMenuArrLinks[i], messagesMenuArrImg[i], messagesMenuArrValue[i]);
     }
 
-    const messagesFilter = document.createElement("div");
-    messagesFilter.setAttribute("class", "messages-filter");
+    const messagesFilter = new HTMLRender({
+        tag: "div",
+        class: "messages-filter"
+    }).createElement();
     messagesMenu.appendChild(messagesFilter);
 
-    const messagesFilterText = document.createElement("p");
-    messagesFilterText.setAttribute("class", "messages-filter__text");
-    messagesFilterText.innerHTML = "Filter messages:";
+    const messagesFilterText = new HTMLRender({
+        tag: "p",
+        class: "messages-filter__text",
+        text: "Filter messages:"
+    }).createElement();
     messagesFilter.appendChild(messagesFilterText);
 
-    const customSelect = document.createElement("div");
-    customSelect.setAttribute("class", "custom-select");
+    const customSelect = new HTMLRender({
+        tag: "div",
+        class: "custom-select"
+    }).createElement();
     messagesFilter.appendChild(customSelect);
 
-    const FilterSelect = document.createElement("select");
-    customSelect.appendChild(FilterSelect);
+    const filterSelect = new HTMLRender({tag: "select"}).createElement();
+    customSelect.appendChild(filterSelect);
 
 
     const createFilterOptions = (value) => {
-       const FilterOption = document.createElement("option");
-       FilterOption.setAttribute("value", value);
-       FilterOption.innerHTML = value;
+       const filterOption = new HTMLRender({
+           tag: "option",
+           value: value,
+           text: value
+       }).createElement();
 
-       FilterSelect.appendChild(FilterOption);
+       filterSelect.appendChild(filterOption);
    };
 
     const filterOptions = ["Select filter", "Date", "Necessary", "Pointed"];
@@ -88,19 +110,23 @@ export function createPageMessages (headerMessages, mainMessages) {
     createSelect();
     document.addEventListener("click", closeAllSelect);
 
-
-
-    const messagesChatWindow = document.createElement("section");
-    messagesChatWindow.setAttribute("class", "messages-wrapper");
-    messagesChatWindow.setAttribute("id", "messages-wrapper");
+    const messagesChatWindow = new HTMLRender({
+        tag: "section",
+        class: "messages-wrapper",
+        id: "messages-wrapper"
+    }).createElement();
     messagesContainer.appendChild(messagesChatWindow);
 
-    const messagesUsersContainer = document.createElement("section");
-    messagesUsersContainer.setAttribute("class", "messages-users");
+    const messagesUsersContainer = new HTMLRender({
+        tag: "section",
+        class: "messages-users"
+    }).createElement();
     messagesChatWindow.appendChild(messagesUsersContainer);
 
-    const messagesUsersWrapper = document.createElement("div");
-    messagesUsersWrapper.setAttribute("class", "messages-users__wrapper custom-scrollbar");
+    const messagesUsersWrapper = new HTMLRender({
+        tag: "div",
+        class:  "messages-users__wrapper custom-scrollbar"
+    }).createElement();
 
     messagesUsersContainer.appendChild(messagesUsersWrapper);
 
@@ -109,39 +135,51 @@ export function createPageMessages (headerMessages, mainMessages) {
     const createMessagesUsers = (name, date, message, uniqueId) => {
 
         //creating wrapper for user
-        const messagesUserWrapper = document.createElement("div");
-        messagesUserWrapper.setAttribute("class", `messages-user`);
-        messagesUserWrapper.setAttribute("id", uniqueId);
+        const messagesUserWrapper = new HTMLRender({
+            tag: "div",
+            class: "messages-user",
+            id: uniqueId
+        }).createElement();
         messagesUsersWrapper.appendChild(messagesUserWrapper);
 
         //creating wrapper for user avatar, name, time
-        const messagesUserWrapperText = document.createElement("div");
-        messagesUserWrapperText.setAttribute("class", "messages-user__wrapper");
+        const messagesUserWrapperText = new HTMLRender({
+            tag: "div",
+            class: "messages-user__wrapper"
+        }).createElement();
         messagesUserWrapper.appendChild(messagesUserWrapperText);
 
 
         //creating avatar of user in recent messages
-        const messagesUserAvatar = document.createElement("img");
-        messagesUserAvatar.setAttribute("class", "messages-user__avatar");
-        messagesUserAvatar.setAttribute("src", "../assets/images/users-avatar/photo-3.png");
+        const messagesUserAvatar = new HTMLRender({
+            tag: "img",
+            class: "messages-user__avatar",
+            src: "../assets/images/users-avatar/photo-3.png"
+        }).createElement();
         messagesUserWrapperText.appendChild(messagesUserAvatar);
 
         //creating name of user in recent messages
-        const messagesUserName = document.createElement("h2");
-        messagesUserName.setAttribute("class", "messages-user__name");
-        messagesUserName.innerHTML = name;
+        const messagesUserName = new HTMLRender({
+            tag: "h2",
+            class: "messages-user__name",
+            text: name
+        }).createElement();
         messagesUserWrapperText.appendChild(messagesUserName);
 
         //creating time of last message
-        const messagesUserTime = document.createElement("h3");
-        messagesUserTime.setAttribute("class", "messages-user__time");
-        messagesUserTime.innerHTML = date;
+        const messagesUserTime = new HTMLRender({
+            tag: "h3",
+            class: "messages-user__time",
+            text: date
+        }).createElement();
         messagesUserWrapperText.appendChild(messagesUserTime);
 
         //creating text of recent message
-        const messagesUserLastText = document.createElement("p");
-        messagesUserLastText.setAttribute("class", "messages-user__text");
-        messagesUserLastText.innerHTML = message;
+        const messagesUserLastText = new HTMLRender({
+            tag: "p",
+            class: "messages-user__text",
+            text: message
+        }).createElement();
         messagesUserWrapper.appendChild(messagesUserLastText);
 
     };
@@ -163,18 +201,22 @@ export function createPageMessages (headerMessages, mainMessages) {
         let threads = await response.json();
         console.log(threads);
 
-        // TODO: parse messages and get info about last message and date. Sort all threads.
+        //TODO: make class for requests, responsive
         
         let name;
         let message;
         let date, newSplitString, newDate;
-        for (let i = 0; i < threads.length; i++) {
-            for (let j = 0; j < threads[i].users.length; j++) {
+        for (let i = threads.length - 1; i >= 0 ; i--) {
+            for (let j = threads[i].users.length - 1; j >= 0 ; j--) {
 
                 if (threads[i].users[j]._id !== localStorage.currentUser) {
                     name = threads[i].users[j].name;
                 }
-                message = "";
+                if (threads[i].message !== null) {
+                    message = threads[i].message.body;
+                } else {
+                    message = "";
+                }
                 date = threads[i].updated_at.slice(0,10);
                 newSplitString = new Date(date);
                 newDate = newSplitString.getDate() + " " + months[newSplitString.getMonth()];
@@ -189,74 +231,69 @@ export function createPageMessages (headerMessages, mainMessages) {
     setTimeout(getAllThreads, 100);
 
     // new conversation button
-    const messagesNewConversationDiv = document.createElement("div");
-    messagesNewConversationDiv.setAttribute("class", "messages-conversation");
+    const messagesNewConversationDiv = new HTMLRender({
+        tag: "div",
+        class: "messages-conversation"
+    }).createElement();
     messagesUsersContainer.appendChild(messagesNewConversationDiv);
 
-    const messagesNewConversation = document.createElement("button");
-    messagesNewConversation.setAttribute("class", "messages-conversation__button");
-    messagesNewConversation.setAttribute("id", "messages-conversation__button");
-    messagesNewConversation.innerHTML = "New conversation";
+    const messagesNewConversation = new HTMLRender({
+        tag: "button",
+        class: "messages-conversation__button",
+        id: "messages-conversation__button",
+        text: "New conversation"
+    }).createElement();
 
     messagesNewConversationDiv.appendChild(messagesNewConversation);
 
     //chat window
-    const messagesWindow = document.createElement("section");
-    messagesWindow.setAttribute("class", "messages-chat");
-    messagesWindow.setAttribute("id", "messages-chat");
+    const messagesWindow = new HTMLRender({
+        tag: "section",
+        class: "messages-chat",
+        id: "messages-chat"
+    }).createElement();
     messagesChatWindow.appendChild(messagesWindow);
 
     //messages wrapper
-    const messagesChat = document.createElement("div");
-    messagesChat.setAttribute("class", "messages-chatMessages custom-scrollbar");
-    messagesChat.setAttribute("id", "messages-chatMessages");// a little bit bad naming, I know but nothing else I can't imagine :D
+    const messagesChat = new HTMLRender({
+        tag: "div",
+        class: "messages-chatMessages custom-scrollbar",
+        id: "messages-chatMessages"
+    }).createElement();
     messagesWindow.appendChild(messagesChat);
 
-    const senderInformation = document.createElement("section");
-    senderInformation.setAttribute("class", "messages-senderinfo custom-scrollbar");
-    senderInformation.setAttribute("id", "messages-senderinfo");
+    const senderInformation = new HTMLRender({
+        tag: "section",
+        class: "messages-senderinfo custom-scrollbar",
+        id: "messages-senderinfo"
+    }).createElement();
     messagesChatWindow.appendChild(senderInformation);
 
 
 
     //wrapper for input and button
     //input for messages
-    const inputMessageWrapper = document.createElement("div");
-    inputMessageWrapper.setAttribute("class", "messages-chat__inputwrap");
+    const inputMessageWrapper = new HTMLRender({
+        tag: "div",
+        class: "messages-chat__inputwrap"
+    }).createElement();
     messagesWindow.appendChild(inputMessageWrapper);
 
-    const inputMessage = document.createElement("textarea");
-    inputMessage.setAttribute("class", "messages-chat__textarea");
-    inputMessage.setAttribute("id", "messages-chat__textarea");
-
-    inputMessage.setAttribute("placeholder", "Write a message");
+    const inputMessage = new HTMLRender({
+        tag: "textarea",
+        class: "messages-chat__textarea",
+        id: "messages-chat__textarea",
+        placeholder: "Write a message"
+    }).createElement();
     inputMessageWrapper.appendChild(inputMessage);
 
     //send button for input
-    const inputMessageButton = document.createElement("button");
-    inputMessageButton.setAttribute("class", "messages-chat__send");
-    inputMessageButton.setAttribute("id", "messages-chat__send");
+    const inputMessageButton = new HTMLRender({
+        tag: "button",
+        class: "messages-chat__send",
+        id: "messages-chat__send"
+    }).createElement();
     inputMessageWrapper.appendChild(inputMessageButton);
-
-    getAllUsers();
-
-
-}
-
-async function getAllUsers () {
-
-    let requestOptions = {
-        method: 'GET',
-        headers: {
-            "x-access-token": localStorage.token
-        },
-        redirect: 'follow'
-    };
-
-    fetch("https://geekhub-frontend-js-9.herokuapp.com/api/users/all", requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
 }
 
 export async function createThread () {
@@ -356,23 +393,48 @@ export async function getAllThreadMessages (threadId) {
                 createSenderMessages(text, newTime);
             }
         }
-        for (let i = 0; i < threadMessages.length; i++) {
-            if(senderId === threadMessages[i].user._id) {
 
-                let name = threadMessages[i].user.name;
-                let email = "";
-                let position = "";
-                let description = "";
-                let phone = "";
-                let address = "";
-                let organization = "";
+        let requestOptions = {
+            method: 'GET',
+            headers: {
+                "x-access-token": localStorage.token
+            },
+            redirect: 'follow'
+        };
 
+        let responseUser = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/users/all", requestOptions);
+        let responseSenderInfo = await responseUser.json();
+
+        let senderInfo = responseSenderInfo.find(item => item._id === senderId);
+
+            if(senderInfo) {
+                let name = senderInfo.name;
+                let email = senderInfo.email;
+                let position = senderInfo.position;
+                let description = senderInfo.description;
+                let phone = senderInfo.phone;
+                let address = senderInfo.address;
+                let organization = senderInfo.organization;
+
+                document.getElementById("messages-senderinfo").style.width = 100 + "%";
                 createSenderInfo(name, email, position, description, phone, address, organization);
-                break;
+            } else if (!senderId) {
+                document.getElementById("messages-senderinfo").style.width = 0 + "%";
             }
-        }
         document.querySelector(".messages-chat__inputwrap").style.display = "flex";
 
+    } else {
+        createNotificationNoMessagesYet();
+        document.querySelector(".messages-chat__inputwrap").style.display = "flex";
+    }
+
+}
+
+export function clearNoMessagesNotification () {
+    if (document.getElementById("messages-chat__nothing")) {
+        const chatWindow = document.getElementById("messages-chat");
+        const nothingMessages = document.getElementById("messages-chat__nothing");
+        chatWindow.removeChild(nothingMessages);
     }
 }
 
@@ -385,105 +447,153 @@ export function clearThread (id) {
     }
 }
 
+function createNotificationNoMessagesYet () {
+    const chatWindow = document.getElementById("messages-chat");
+
+    const noMessagesYet = new HTMLRender({
+        tag: "h2",
+        class: "messages-chat__nothing",
+        id: "messages-chat__nothing",
+        text: "Write message to start conversation"
+    }).createElement();
+    chatWindow.appendChild(noMessagesYet);
+}
+
 function createSenderInfo (name, email, position, description, phone, adress, organization) {
     const senderInformation = document.getElementById("messages-senderinfo");
     //avatar
-    const senderInfoAvatar = document.createElement("img");
-    senderInfoAvatar.setAttribute("class", "messages-senderinfo__avatar");
-    senderInfoAvatar.setAttribute("src", "../assets/images/users-avatar/lsize-avatar.png");
+    const senderInfoAvatar = new HTMLRender({
+        tag: "img",
+        class: "messages-senderinfo__avatar",
+        src: "../assets/images/users-avatar/lsize-avatar.png"
+    }).createElement();
     senderInformation.appendChild(senderInfoAvatar);
 
     //Name
-    const senderInfoName = document.createElement("h2");
-    senderInfoName.setAttribute("class", "messages-senderinfo__name");
-    senderInfoName.innerHTML = name;
+    const senderInfoName = new HTMLRender ({
+        tag: "h2",
+        class: "messages-senderinfo__name",
+        text: name
+    }).createElement();
+
     senderInformation.appendChild(senderInfoName);
 
     //position
-    const senderInfoPosition = document.createElement("h3");
-    senderInfoPosition.setAttribute("class", "messages-senderinfo__position");
-    senderInfoPosition.innerHTML = position;
+    const senderInfoPosition = new HTMLRender({
+        tag: "h3",
+        class: "messages-senderinfo__position",
+        text: position
+    }).createElement();
     senderInformation.appendChild(senderInfoPosition);
 
     //describe of user
-    const senderInfoDescribe = document.createElement("p");
-    senderInfoDescribe.setAttribute("class", "messages-senderinfo__describe");
-    senderInfoDescribe.innerHTML = description;
+    const senderInfoDescribe = new HTMLRender({
+        tag: "p",
+        class: "messages-senderinfo__describe",
+        text: description
+    }).createElement();
     senderInformation.appendChild(senderInfoDescribe);
 
     //email
-    const senderInfoEmail = document.createElement("p");
-    senderInfoEmail.setAttribute("class", "messages-senderinfo__contact");
-    senderInfoEmail.innerHTML = "Email";
+    const senderInfoEmail = new HTMLRender({
+        tag: "p",
+        class: "messages-senderinfo__contact",
+        text: "Email"
+    }).createElement();
     senderInformation.appendChild(senderInfoEmail);
 
-    const senderInfoEmailText = document.createElement("p");
-    senderInfoEmailText.setAttribute("class", "messages-senderinfo__contact-text");
-    senderInfoEmailText.innerHTML = email;
+    const senderInfoEmailText = new HTMLRender({
+        tag: "p",
+        class: "messages-senderinfo__contact-text",
+        text: email
+    }).createElement();
     senderInformation.appendChild(senderInfoEmailText);
 
     //phone
-    const senderInfoPhone = document.createElement("p");
-    senderInfoPhone.setAttribute("class", "messages-senderinfo__contact");
-    senderInfoPhone.innerHTML = "Phone";
+    const senderInfoPhone = new HTMLRender({
+        tag: "p",
+        class: "messages-senderinfo__contact",
+        text: "Phone"
+    }).createElement();
     senderInformation.appendChild(senderInfoPhone);
 
-    const senderInfoPhoneText = document.createElement("p");
-    senderInfoPhoneText.setAttribute("class", "messages-senderinfo__contact-text");
-    senderInfoPhoneText.innerHTML = phone;
+    const senderInfoPhoneText = new HTMLRender({
+        tag: "p",
+        class: "messages-senderinfo__contact-text",
+        text: phone
+    }).createElement();
     senderInformation.appendChild(senderInfoPhoneText);
 
     //adress
-    const senderInfoAdress = document.createElement("p");
-    senderInfoAdress.setAttribute("class", "messages-senderinfo__contact");
-    senderInfoAdress.innerHTML = "Adress";
+    const senderInfoAdress = new HTMLRender({
+        tag: "p",
+        class: "messages-senderinfo__contact",
+        text: "Adress"
+    }).createElement();
     senderInformation.appendChild(senderInfoAdress);
 
-    const senderInfoAdressText = document.createElement("p");
-    senderInfoAdressText.setAttribute("class", "messages-senderinfo__contact-text");
-    senderInfoAdressText.innerHTML = adress;
+    const senderInfoAdressText = new HTMLRender({
+        tag: "p",
+        class: "messages-senderinfo__contact-text",
+        text: adress
+    }).createElement();
     senderInformation.appendChild(senderInfoAdressText);
 
     //organization
-    const senderInfoOrganization = document.createElement("p");
-    senderInfoOrganization.setAttribute("class", "messages-senderinfo__contact");
-    senderInfoOrganization.innerHTML = "Organization";
+    const senderInfoOrganization = new HTMLRender({
+        tag: "p",
+        class: "messages-senderinfo__contact",
+        text: "Organization"
+    }).createElement();
     senderInformation.appendChild(senderInfoOrganization);
 
-    const senderInfoOrganizationText = document.createElement("p");
-    senderInfoOrganizationText.setAttribute("class", "messages-senderinfo__contact-text");
-    senderInfoOrganizationText.innerHTML = organization;
+    const senderInfoOrganizationText = new HTMLRender({
+        tag: "p",
+        class: "messages-senderinfo__contact-text",
+        text: organization
+    }).createElement();
     senderInformation.appendChild(senderInfoOrganizationText);
 }
 
 function createSenderMessages (text, time) {
     const messagesChat = document.getElementById("messages-chatMessages");
 
-    const senderMessages = document.createElement("div");
-    senderMessages.setAttribute("class", "messages-sender");
+    const senderMessages = new HTMLRender({
+        tag: "div",
+        class: "messages-sender"
+    }).createElement();
     messagesChat.appendChild(senderMessages);
 
     //sender's avatar
-    const senderAvatar = document.createElement("img");
-    senderAvatar.setAttribute("class", "messages-sender__avatar");
-    senderAvatar.setAttribute("src", "../assets/images/users-avatar/photo-3.png");
+    const senderAvatar = new HTMLRender({
+        tag: "img",
+        class: "messages-sender__avatar",
+        src: "../assets/images/users-avatar/photo-3.png"
+    }).createElement();
     senderMessages.appendChild(senderAvatar);
 
     //wrapper for text from sender
-    const senderTextWrapper = document.createElement("div");
-    senderTextWrapper.setAttribute("class", "messages-sender__wrapper");
+    const senderTextWrapper = new HTMLRender({
+        tag: "div",
+        class: "messages-sender__wrapper"
+    }).createElement();
     senderMessages.appendChild(senderTextWrapper);
 
     //sender's text
-    const senderText = document.createElement("div");
-    senderText.setAttribute("class","messages-sender__text");
-    senderText.innerHTML = text;
+    const senderText = new HTMLRender({
+        tag: "div",
+        class: "messages-sender__text",
+        text: text
+    }).createElement();
     senderTextWrapper.appendChild(senderText);
 
     //text date
-    const senderTime = document.createElement("p");
-    senderTime.setAttribute("class", "messages-sender__date");
-    senderTime.innerHTML = time;
+
+    const senderTime = new HTMLRender({
+        tag: "p",
+        class: "messages-sender__date",
+        text: time
+    }).createElement();
     senderTextWrapper.appendChild(senderTime);
 
 }
@@ -491,33 +601,43 @@ function createSenderMessages (text, time) {
 function createReceiverMessages (text, time) {
     const messagesChat = document.getElementById("messages-chatMessages");
 
-
-    const receiverMessages = document.createElement("div");
-    receiverMessages.setAttribute("class", "messages-receiver");
+    const receiverMessages = new HTMLRender({
+        tag: "div",
+        class: "messages-receiver"
+    }).createElement();
     messagesChat.appendChild(receiverMessages);
 
 
     //wrapper for text from sender
-    const receiverTextWrapper = document.createElement("div");
-    receiverTextWrapper.setAttribute("class", "messages-receiver__wrapper");
+    const receiverTextWrapper = new HTMLRender({
+        tag: "div",
+        class: "messages-receiver__wrapper"
+    }).createElement();
     receiverMessages.appendChild(receiverTextWrapper);
 
     //receiver's text
-    const receiverText = document.createElement("div");
-    receiverText.setAttribute("class","messages-receiver__text");
-    receiverText.innerHTML = text;
+    const receiverText = new HTMLRender({
+        tag: "div",
+        class: "messages-receiver__text",
+        text: text
+    }).createElement();
     receiverTextWrapper.appendChild(receiverText);
 
     //text date
-    const receiverTime = document.createElement("p");
-    receiverTime.setAttribute("class", "messages-receiver__date");
-    receiverTime.innerHTML = time;
+    const receiverTime = new HTMLRender({
+        tag: "p",
+        class: "messages-receiver__date",
+        text: time
+    }).createElement();
     receiverTextWrapper.appendChild(receiverTime);
 
     //receiver's avatar
-    const receiverAvatar = document.createElement("img");
-    receiverAvatar.setAttribute("class", "messages-receiver__avatar");
-    receiverAvatar.setAttribute("src", "../assets/images/users-avatar/photo-1.png");
+
+    const receiverAvatar = new HTMLRender({
+        tag: "img",
+        class: "messages-receiver__avatar",
+        src: "../assets/images/users-avatar/photo-1.png",
+    }).createElement();
     receiverMessages.appendChild(receiverAvatar);
 
     messagesChat.scrollTop = messagesChat.scrollHeight;

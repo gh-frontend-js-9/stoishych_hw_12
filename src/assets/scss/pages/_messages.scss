@@ -70,7 +70,7 @@
 }
 
 .messages-users__wrapper {
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   max-height: 70vh;
 }
@@ -147,7 +147,7 @@
 
 .messages-chatMessages {
   padding: 0 20px 0 20px;
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 70vh;
 }
 
@@ -208,6 +208,14 @@
   text-align: right;
 }
 
+.messages-chat__nothing {
+  text-align: center;
+  max-width: 300px;
+  margin: 0 auto;
+  margin-top: 30%;
+  color: white;
+}
+
 .messages-chat__textarea {
   max-width: 925px;
   width: 100%;
@@ -260,12 +268,13 @@
 
 .messages-senderinfo {
   max-width: 318px;
-  width: 100%;
+  width: 0;
   box-shadow: 0 3px 80px rgba(23, 24, 32, 0.3);
   background-color: #2b2d3c;
   text-align: center;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
+
 .messages-senderinfo::-webkit-scrollbar,
 .messages-senderinfo::-webkit-scrollbar-thumb,
 .messages-senderinfo::-webkit-scrollbar-track {

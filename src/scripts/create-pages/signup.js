@@ -1,5 +1,6 @@
 import {createHeader} from "./shared/header";
 import {createSidebarNav} from "./shared/sidebarNav";
+import {HTMLRender} from "./createPageClass";
 
 export function createSignUpPage (headerSignUp, mainSignUp) {
     /*header*/
@@ -11,117 +12,153 @@ export function createSignUpPage (headerSignUp, mainSignUp) {
     /*end of sidebarNav*/
 
     const main = document.getElementById(mainSignUp);
-    const signUpSection = document.createElement("section");
-    signUpSection.setAttribute("class", "authorization");
+
+    const signUpSection = new HTMLRender({
+        tag: "section",
+        class: "authorization"
+    }).createElement();
     main.appendChild(signUpSection);
 
-    const signUpWrapper = document.createElement("div");
-    signUpWrapper.setAttribute("class", "authorization-wrapper");
+    const signUpWrapper = new HTMLRender({
+        tag: "div",
+        class: "authorization-wrapper"
+    }).createElement();
     signUpSection.appendChild(signUpWrapper);
 
-    const signUpH1 = document.createElement("h1");
-    signUpH1.setAttribute("class", "authorization__text");
-    signUpH1.innerHTML = "Sign up";
+    const signUpH1 = new HTMLRender({
+        tag: "h1",
+        class: "authorization__text",
+        text: "Sign up"
+    }).createElement();
     signUpWrapper.appendChild(signUpH1);
 
-    const signUpNotAMember = document.createElement("a");
-    signUpNotAMember.setAttribute("href", "login.html");
-    signUpNotAMember.setAttribute("class", "authorization-link");
-    signUpNotAMember.innerHTML = "Existing member?";
+    const signUpNotAMember = new HTMLRender({
+        tag: "a",
+        href: "login.html",
+        class: "authorization-link",
+        text: "Existing member?"
+    }).createElement();
     signUpWrapper.appendChild(signUpNotAMember);
 
     //creating form
 
-    const signUpForm = document.createElement("form");
-    signUpForm.setAttribute("action", "https://geekhub-frontend-js-9.herokuapp.com/api/users/");
-    signUpForm.setAttribute("method", "post");
-    signUpForm.setAttribute("id", "signup-form");
-    signUpForm.setAttribute("class", "authorization-form");
+    const signUpForm = new HTMLRender({
+        tag: "form",
+        action: "https://geekhub-frontend-js-9.herokuapp.com/api/users/",
+        method: "post",
+        id: "signup-form",
+        class: "authorization-form"
+    }).createElement();
     signUpWrapper.appendChild(signUpForm);
 
     //name
 
-    const signUpNameGroup = document.createElement("div");
-    signUpNameGroup.setAttribute("class", "form__group");
+    const signUpNameGroup = new HTMLRender({
+        tag: "div",
+        class: "form__group"
+    }).createElement();
     signUpForm.appendChild(signUpNameGroup);
 
-    const signUpNameInput = document.createElement("input");
-    signUpNameInput.setAttribute("type", "text");
-    signUpNameInput.setAttribute("id", "signup-name");
-    signUpNameInput.setAttribute("placeholder", "Enter your name");
-    signUpNameInput.setAttribute("class", "form__field");
+    const signUpNameInput = new HTMLRender ({
+        tag: "input",
+        type: "text",
+        id: "signup-name",
+        placeholder: "Enter your name",
+        class: "form__field"
+    }).createElement();
     signUpNameGroup.appendChild(signUpNameInput);
 
-    const signUpNameLabel = document.createElement("label");
-    signUpNameLabel.setAttribute("for", "signup-name");
-    signUpNameLabel.setAttribute("class", "form__label");
-    signUpNameLabel.innerHTML = "Name";
+    const signUpNameLabel = new HTMLRender({
+        tag: "label",
+        for: "signup-name",
+        class: "form__label",
+        text: "Name"
+    }).createElement();
     signUpNameGroup.appendChild(signUpNameLabel);
 
     //email
-    const signUpEmailGroup = document.createElement("div");
-    signUpEmailGroup.setAttribute("class", "form__group");
+    const signUpEmailGroup = new HTMLRender({
+        tag: "div",
+        class: "form__group"
+    }).createElement();
     signUpForm.appendChild(signUpEmailGroup);
 
-    const signUpEmailInput = document.createElement("input");
-    signUpEmailInput.setAttribute("type", "email");
-    signUpEmailInput.setAttribute("id", "signup-email");
-    signUpEmailInput.setAttribute("placeholder", "Enter your email");
-    signUpEmailInput.setAttribute("class", "form__field");
+    const signUpEmailInput = new HTMLRender({
+        tag: "input",
+        type: "email",
+        id: "signup-email",
+        placeholder: "Enter your email",
+        class: "form__field"
+    }).createElement();
     signUpEmailGroup.appendChild(signUpEmailInput);
 
-    const signUpEmailLabel = document.createElement("label");
-    signUpEmailLabel.setAttribute("for", "signup-email");
-    signUpEmailLabel.setAttribute("class", "form__label");
-    signUpEmailLabel.innerHTML = "Email";
+    const signUpEmailLabel = new HTMLRender({
+        tag: "label",
+        for: "signup-email",
+        class: "form__label",
+        text: "Email"
+    }).createElement();
     signUpEmailGroup.appendChild(signUpEmailLabel);
 
 
     //password
 
-    const signUpPasswordGroup = document.createElement("div");
-    signUpPasswordGroup.setAttribute("class", "form__group");
+    const signUpPasswordGroup = new HTMLRender({
+        tag: "div",
+        class: "form__group"
+    }).createElement();
     signUpForm.appendChild(signUpPasswordGroup);
 
-    const signUpPasswordInput = document.createElement("input");
-    signUpPasswordInput.setAttribute("type", "password");
-    signUpPasswordInput.setAttribute("id", "signup-password");
-    signUpPasswordInput.setAttribute("placeholder", "Enter your password");
-    signUpPasswordInput.setAttribute("class", "form__field");
+    const signUpPasswordInput =  new HTMLRender({
+        tag: "input",
+        type: "password",
+        id: "signup-password",
+        placeholder: "Enter your password",
+        class: "form__field"
+    }).createElement();
     signUpPasswordGroup.appendChild(signUpPasswordInput);
 
-    const signUpPasswordLabel = document.createElement("label");
-    signUpPasswordLabel.setAttribute("for", "signup-password");
-    signUpPasswordLabel.setAttribute("class", "form__label" );
-    signUpPasswordLabel.innerHTML = "Password";
+    const signUpPasswordLabel = new HTMLRender({
+        tag: "label",
+        for: "signup-password",
+        class: "form__label",
+        text: "Password"
+    }).createElement();
     signUpPasswordGroup.appendChild(signUpPasswordLabel);
 
     //repeat password
-
-    const signUpRepPasswordGroup = document.createElement("div");
-    signUpRepPasswordGroup.setAttribute("class", "form__group");
+    const signUpRepPasswordGroup = new HTMLRender({
+        tag: "div",
+        class: "form__group"
+    }).createElement();
     signUpForm.appendChild(signUpRepPasswordGroup);
 
-    const signUpRepPasswordInput = document.createElement("input");
-    signUpRepPasswordInput.setAttribute("type", "password");
-    signUpRepPasswordInput.setAttribute("id", "signup-rep-pass");
-    signUpRepPasswordInput.setAttribute("placeholder", "Rewrite your password");
-    signUpRepPasswordInput.setAttribute("class", "form__field");
+    const signUpRepPasswordInput = new HTMLRender({
+        tag: "input",
+        type: "password",
+        id: "signup-rep-pass",
+        placeholder: "Rewrite your password",
+        class: "form__field"
+    }).createElement();
     signUpRepPasswordGroup.appendChild(signUpRepPasswordInput);
 
-    const signUpRepPasswordLabel = document.createElement("label");
-    signUpRepPasswordLabel.setAttribute("for", "signup-rep-pass");
-    signUpRepPasswordLabel.setAttribute("class", "form__label" );
-    signUpRepPasswordLabel.innerHTML = "Rewrite your password";
+    const signUpRepPasswordLabel = new HTMLRender ({
+        tag: "label",
+        for: "signup-rep-pass",
+        class: "form__label",
+        text: "Rewrite your password"
+    }).createElement();
     signUpRepPasswordGroup.appendChild(signUpRepPasswordLabel);
 
     //submit form
 
-    const signUpSubmit = document.createElement("input");
-    signUpSubmit.setAttribute("type", "submit");
-    signUpSubmit.setAttribute("value", "Sign up");
-    signUpSubmit.setAttribute("id", "signup-submit");
-    signUpSubmit.setAttribute("class", "form__submit");
+    const signUpSubmit = new HTMLRender({
+        tag: "input",
+        type: "submit",
+        value: "Sign up",
+        id: "signup-submit",
+        class: "form__submit"
+    }).createElement();
     signUpForm.appendChild(signUpSubmit);
 
     //end of form

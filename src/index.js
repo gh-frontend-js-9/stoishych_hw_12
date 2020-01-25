@@ -4,6 +4,7 @@ import {signUp} from './scripts/registration';
 import {resetPassword} from "./scripts/reset-pass";
 import {validateEmail,validatePassword,validateName,validateRepeatPassword } from "./scripts/validator";
 import {
+    clearNoMessagesNotification,
     clearThread,
     createPageMessages,
     createThread,
@@ -15,16 +16,16 @@ import {createSignUpPage} from "./scripts/create-pages/signup";
 import {createResetPage} from "./scripts/create-pages/reset-pass";
 import {setAuthToken} from "./scripts/create-pages/shared/header";
 
-async function ifLogined() {
+/*async function ifLogined() {
     let response = await fetch('https://geekhub-frontend-js-9.herokuapp.com/api/users/', {
         headers: {
             "x-access-token": localStorage.token
         }
     });
 
-    /*if (response.status === 200) {
+    /!*if (response.status === 200) {
         alert("You are signed in now")
-    }*/
+    }*!/
 
     console.log(response);
 }
@@ -33,7 +34,7 @@ window.onload = async function () {
     if(localStorage.token) {
         ifLogined();
     }
-};
+};*/
 
 if (window.location.href.match('messages.html')) {
     createPageMessages("messages-header", "messages-main");
@@ -45,6 +46,7 @@ if (window.location.href.match('messages.html')) {
                 click.preventDefault();
                 clearThread("messages-chatMessages");
                 clearThread("messages-senderinfo");
+                clearNoMessagesNotification();
                 getAllThreadMessages(conversationClick[i].id);
             });
         }
@@ -67,6 +69,7 @@ if (window.location.href.match('messages.html')) {
         if(sendButton) {
             sendButton.addEventListener("click", function(click) {
                 click.preventDefault();
+                clearNoMessagesNotification();
                 sendMessage();
                 textArea.value = "";
             });
@@ -97,7 +100,6 @@ if (window.location.href.match('login.html')) {
 
     //submit for SignIn
     let loginForm = document.getElementById("login-form");
-    console.log(loginForm);
     if (loginForm) {
         loginForm.addEventListener("submit", function (submit) {
             submit.preventDefault();

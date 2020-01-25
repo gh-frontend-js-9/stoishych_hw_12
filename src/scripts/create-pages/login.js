@@ -1,5 +1,6 @@
 import {createHeader} from "./shared/header";
 import {createSidebarNav} from "./shared/sidebarNav";
+import {HTMLRender} from "./createPageClass";
 
 export function createLoginPage (headerLogin, mainLogin) {
 
@@ -12,89 +13,107 @@ export function createLoginPage (headerLogin, mainLogin) {
     /*end of sidebarNav*/
 
     const main = document.getElementById(mainLogin);
-    const loginSection = document.createElement("section");
-    loginSection.setAttribute("class", "authorization");
+    const loginSection = new HTMLRender({
+        tag: "section",
+        class: "authorization"
+    }).createElement();
     main.appendChild(loginSection);
 
-    const loginWrapper = document.createElement("div");
-    loginWrapper.setAttribute("class", "authorization-wrapper");
+    const loginWrapper = new HTMLRender({
+        tag: "div",
+        class: "authorization-wrapper"
+    }).createElement();
     loginSection.appendChild(loginWrapper);
 
-    const loginH1 = document.createElement("h1");
-    loginH1.setAttribute("class", "authorization__text");
-    loginH1.innerHTML = "Sign in";
+
+    const loginH1 = new HTMLRender({
+        tag: "h1",
+        class: "authorization__text",
+        text: "Sign in"
+    }).createElement();
     loginWrapper.appendChild(loginH1);
 
-    const loginNotAMember = document.createElement("a");
-    loginNotAMember.setAttribute("href", "signup.html");
-    loginNotAMember.setAttribute("class", "authorization-link");
-    loginNotAMember.innerHTML = "Not a member?";
+    const loginNotAMember = new HTMLRender({
+        tag: "a",
+        href: "signup.html",
+        class: "authorization-link",
+        text: "Not a member?"
+    }).createElement();
     loginWrapper.appendChild(loginNotAMember);
 
     //creating form
 
-    const loginForm = document.createElement("form");
-    loginForm.setAttribute("action", "https://geekhub-frontend-js-9.herokuapp.com/api/users/login");
-    loginForm.setAttribute("method", "post");
-    loginForm.setAttribute("id", "login-form");
-    loginForm.setAttribute("class", "authorization-form");
+    const loginForm = new HTMLRender({
+        tag: "form",
+        action: "https://geekhub-frontend-js-9.herokuapp.com/api/users/login",
+        method: "post",
+        id: "login-form",
+        class: "authorization-form"
+    }).createElement();
     loginWrapper.appendChild(loginForm);
 
-    const loginEmailGroup = document.createElement("div");
-    loginEmailGroup.setAttribute("class", "form__group");
+    const loginEmailGroup = new HTMLRender({
+        tag: "div",
+        class: "form__group"
+    }).createElement();
     loginForm.appendChild(loginEmailGroup);
 
-    const loginEmailInput = document.createElement("input");
-    loginEmailInput.setAttribute("type", "email");
-    loginEmailInput.setAttribute("id", "login-email");
-    loginEmailInput.setAttribute("placeholder", "Enter your email");
-    loginEmailInput.setAttribute("class", "form__field");
+    const loginEmailInput = new HTMLRender({
+        tag: "input",
+        type: "email",
+        id: "login-email",
+        placeholder: "Enter your email",
+        class: "form__field"
+    }).createElement();
     loginEmailGroup.appendChild(loginEmailInput);
 
-    const loginEmailLabel = document.createElement("label");
-    loginEmailLabel.setAttribute("for", "login-email");
-    loginEmailLabel.setAttribute("class", "form__label");
-    loginEmailLabel.innerHTML = "Email";
+    const loginEmailLabel = new HTMLRender({
+        tag: "label",
+        for: "login-email",
+        class: "form__label",
+        text: "Email"
+    }).createElement();
     loginEmailGroup.appendChild(loginEmailLabel);
 
-
-
-    /*const breakInputs = document.createElement("br");
-    loginForm.appendChild(breakInputs);*/
-
-    const loginPasswordGroup = document.createElement("div");
-    loginPasswordGroup.setAttribute("class", "form__group");
+    const loginPasswordGroup = new HTMLRender({
+        tag: "div",
+        class: "form__group"
+    }).createElement();
     loginForm.appendChild(loginPasswordGroup);
 
-    const loginPasswordInput = document.createElement("input");
-    loginPasswordInput.setAttribute("type", "password");
-    loginPasswordInput.setAttribute("id", "login-password");
-    loginPasswordInput.setAttribute("placeholder", "Enter your password");
-    loginPasswordInput.setAttribute("class", "form__field");
+    const loginPasswordInput = new HTMLRender({
+        tag: "input",
+        type: "password",
+        id: "login-password",
+        placeholder: "Enter your password",
+        class: "form__field"
+    }).createElement();
     loginPasswordGroup.appendChild(loginPasswordInput);
 
-    const loginPasswordLabel = document.createElement("label");
-    loginPasswordLabel.setAttribute("for", "login-password");
-    loginPasswordLabel.setAttribute("class", "form__label" );
-    loginPasswordLabel.innerHTML = "Password";
+    const loginPasswordLabel = new HTMLRender({
+        tag: "label",
+        for: "login-password",
+        class: "form__label",
+        text: "Password"
+    }).createElement();
     loginPasswordGroup.appendChild(loginPasswordLabel);
 
-
-
-    const loginSubmit = document.createElement("input");
-    loginSubmit.setAttribute("type", "submit");
-    loginSubmit.setAttribute("value", "Sign in");
-    loginSubmit.setAttribute("id", "login-submit");
-    loginSubmit.setAttribute("class", "form__submit");
+    const loginSubmit = new HTMLRender({
+        tag: "input",
+        type: "submit",
+        value: "Sign in",
+        id: "login-submit",
+        class: "form__submit"
+    }).createElement();
     loginForm.appendChild(loginSubmit);
 
     //end of form
 
-    const loginForgotPassword = document.createElement("a");
-    loginForgotPassword.setAttribute("href", "reset-pass.html");
-    loginForgotPassword.setAttribute("class", "authorization-link");
-    loginForgotPassword.innerHTML = "Forgot password?";
+    const loginForgotPassword = new HTMLRender ({
+        tag: "a",
+        href: "reset-pass.html",
+        class: "authorization-link",
+        text: "Forgot password?"
+    }).createElement();
     loginWrapper.appendChild(loginForgotPassword);
-
-
 }

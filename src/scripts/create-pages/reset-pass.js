@@ -1,5 +1,6 @@
 import {createHeader} from "./shared/header";
 import {createSidebarNav} from "./shared/sidebarNav";
+import {HTMLRender} from "./createPageClass";
 
 export function createResetPage (resetHeader, resetMain) {
 
@@ -12,96 +13,127 @@ export function createResetPage (resetHeader, resetMain) {
     /*end of sidebarNav*/
 
     const main = document.getElementById(resetMain);
-    const resetSection = document.createElement("section");
-    resetSection.setAttribute("class", "authorization");
+    const resetSection = new HTMLRender ({
+        tag: "section",
+        class: "authorization"
+    }).createElement();
     main.appendChild(resetSection);
 
-    const resetWrapper = document.createElement("div");
-    resetWrapper.setAttribute("class", "authorization-wrapper");
+    const resetWrapper = new HTMLRender({
+        tag: "div",
+        class: "authorization-wrapper"
+    }).createElement();
     resetSection.appendChild(resetWrapper);
 
-    const resetH1 = document.createElement("h1");
-    resetH1.setAttribute("class", "authorization__text");
-    resetH1.innerHTML = "Reset password";
+    const resetH1 = new HTMLRender( {
+        tag: "h1",
+        class: "authorization__text",
+        text: "Reset password"
+    }).createElement();
     resetWrapper.appendChild(resetH1);
 
-    const resetNotAMember = document.createElement("a");
-    resetNotAMember.setAttribute("href", "login.html");
-    resetNotAMember.setAttribute("class", "authorization-link");
-    resetNotAMember.innerHTML = "Sign in";
+    const resetNotAMember = new HTMLRender ({
+        tag: "a",
+        href: "login.html",
+        class: "authorization-link",
+        text: "Sign in"
+    }).createElement();
     resetWrapper.appendChild(resetNotAMember);
 
     //creating form
 
-    const resetForm = document.createElement("form");
-    resetForm.setAttribute("action", "https://geekhub-frontend-js-9.herokuapp.com/api/users/reset_password");
-    resetForm.setAttribute("method", "post");
-    resetForm.setAttribute("id", "reset-form");
-    resetForm.setAttribute("class", "authorization-form");
+    const resetForm = new HTMLRender({
+        tag: "form",
+        action: "https://geekhub-frontend-js-9.herokuapp.com/api/users/reset_password",
+        method: "post",
+        id: "reset-form",
+        class: "authorization-form",
+    }).createElement();
     resetWrapper.appendChild(resetForm);
 
     //email
-    const resetEmailGroup = document.createElement("div");
-    resetEmailGroup.setAttribute("class", "form__group");
+    const resetEmailGroup = new HTMLRender({
+        tag: "div",
+        class: "form__group"
+    }).createElement();
     resetForm.appendChild(resetEmailGroup);
 
-    const resetEmailInput = document.createElement("input");
-    resetEmailInput.setAttribute("type", "email");
-    resetEmailInput.setAttribute("id", "reset-email");
-    resetEmailInput.setAttribute("placeholder", "Enter your email");
-    resetEmailInput.setAttribute("class", "form__field");
+
+    const resetEmailInput = new HTMLRender({
+        tag: "input",
+        type: "email",
+        id: "reset-email",
+        placeholder: "Enter your email",
+        class: "form__field"
+    }).createElement();
     resetEmailGroup.appendChild(resetEmailInput);
 
-    const resetEmailLabel = document.createElement("label");
-    resetEmailLabel.setAttribute("for", "reset-email");
-    resetEmailLabel.setAttribute("class", "form__label");
-    resetEmailLabel.innerHTML = "Email";
+    const resetEmailLabel = new HTMLRender ({
+        tag: "label",
+        for: "reset-email",
+        class: "form__label",
+        text: "Email"
+    }).createElement();
     resetEmailGroup.appendChild(resetEmailLabel);
 
 
     //password
 
-    const resetPasswordGroup = document.createElement("div");
-    resetPasswordGroup.setAttribute("class", "form__group");
+    const resetPasswordGroup = new HTMLRender({
+        tag: "div",
+        class: "form__group"
+    }).createElement();
     resetForm.appendChild(resetPasswordGroup);
 
-    const resetPasswordInput = document.createElement("input");
-    resetPasswordInput.setAttribute("type", "password");
-    resetPasswordInput.setAttribute("id", "reset-password");
-    resetPasswordInput.setAttribute("placeholder", "Enter your password");
-    resetPasswordInput.setAttribute("class", "form__field");
+    const resetPasswordInput = new HTMLRender({
+        tag: "input",
+        type: "password",
+        id: "reset-password",
+        placeholder: "Enter your password",
+        class: "form__field"
+    }).createElement();
     resetPasswordGroup.appendChild(resetPasswordInput);
 
-    const resetPasswordLabel = document.createElement("label");
-    resetPasswordLabel.setAttribute("for", "reset-password");
-    resetPasswordLabel.setAttribute("class", "form__label" );
-    resetPasswordLabel.innerHTML = "Password";
+    const resetPasswordLabel = new HTMLRender({
+        tag: "label",
+        for: "reset-password",
+        class: "form__label",
+        text: "Password"
+    }).createElement();
     resetPasswordGroup.appendChild(resetPasswordLabel);
 
     //repeat password
 
-    const resetRepeatPasswordGroup = document.createElement("div");
-    resetRepeatPasswordGroup.setAttribute("class", "form__group");
+    const resetRepeatPasswordGroup = new HTMLRender({
+        tag: "div",
+        class: "form__group"
+    }).createElement();
     resetForm.appendChild(resetRepeatPasswordGroup);
 
-    const resetRepeatPasswordInput = document.createElement("input");
-    resetRepeatPasswordInput.setAttribute("type", "password");
-    resetRepeatPasswordInput.setAttribute("id", "reset-rep-pass");
-    resetRepeatPasswordInput.setAttribute("placeholder", "Enter your password");
-    resetRepeatPasswordInput.setAttribute("class", "form__field");
+    const resetRepeatPasswordInput = new HTMLRender({
+        tag: "input",
+        type: "password",
+        id: "reset-rep-pass",
+        placeholder:"Enter your password",
+        class: "form__field"
+    }).createElement();
     resetRepeatPasswordGroup.appendChild(resetRepeatPasswordInput);
 
-    const resetRepeatPasswordLabel = document.createElement("label");
-    resetRepeatPasswordLabel.setAttribute("for", "reset-rep-pass");
-    resetRepeatPasswordLabel.setAttribute("class", "form__label" );
-    resetRepeatPasswordLabel.innerHTML = "Repeat password";
+    const resetRepeatPasswordLabel = new HTMLRender({
+        tag: "label",
+        for: "reset-rep-pass",
+        class: "form__label",
+        text: "Repeat password"
+    }).createElement();
     resetRepeatPasswordGroup.appendChild(resetRepeatPasswordLabel);
 
     //submit
-    const resetSubmit = document.createElement("input");
-    resetSubmit.setAttribute("type", "submit");
-    resetSubmit.setAttribute("value", "Reset");
-    resetSubmit.setAttribute("id", "reset-submit");
-    resetSubmit.setAttribute("class", "form__submit");
+    const resetSubmit = new HTMLRender({
+        tag: "input",
+        type: "submit",
+        value: "Reset",
+        id: "reset-submit",
+        class: "form__submit"
+    }).createElement();
     resetForm.appendChild(resetSubmit);
 }

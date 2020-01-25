@@ -17,8 +17,9 @@ export async function signUp(email,password,name) {
     };
 
     let response = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/users/", sendData);
+    console.log(response);
 
-    if (response.status === 200) {
+    if (response.ok) {
         alert("You created account");
     } else alert ("This account already exists");
 }
