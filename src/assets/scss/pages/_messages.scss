@@ -78,15 +78,16 @@
 .messages-user {
   border-top: 1px solid rgba(156, 161, 178, 0.3);
   border-bottom: 1px solid rgba(156, 161, 178, 0.3);
-  padding: 30px 24px 20px 50px;
+  padding: 40px 25px 35px 60px;
   max-height: 195px;
   cursor: pointer;
-
 }
 
-.messages-user:nth-child(3) {
+.messages-user_active {
   background-color: #2f3242;
+
 }
+
 
 .messages-user__wrapper {
   display: flex;
@@ -112,6 +113,9 @@
   font-size: 16px;
   margin-top: 30px;
   margin-bottom: 10px;
+  overflow: hidden;
+  max-height: 45px;
+  line-height: 24px;
 }
 .messages-conversation {
   display: flex;
@@ -133,6 +137,11 @@
   cursor: pointer;
   position: absolute;
   bottom: 15px;
+  transition: 0.2s;
+}
+
+.messages-conversation__button:hover {
+  background-color: #21c2f3;
 }
 
 .messages-conversation__button:before {
@@ -189,6 +198,7 @@
   background-color: #404359;
   color: #ffffff;
   font-size: 16px;
+  overflow-wrap: break-word;
 }
 
 .messages-receiver__text {

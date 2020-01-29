@@ -44,8 +44,12 @@ if (window.location.href.match('messages.html')) {
         for (let i = 0; i < conversationClick.length; i++) {
             conversationClick[i].addEventListener("click", function(click) {
                 click.preventDefault();
-                clearThread("messages-chatMessages");
-                clearThread("messages-senderinfo");
+                let current = document.getElementsByClassName("messages-user_active");
+                if (current.length > 0) {
+                    current[0].className = current[0].className.replace(" messages-user_active", "");
+                }
+                this.className += " messages-user_active";
+                clearThread("messages-chatMessages", "messages-senderinfo");
                 clearNoMessagesNotification();
                 getAllThreadMessages(conversationClick[i].id);
             });

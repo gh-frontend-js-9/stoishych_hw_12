@@ -332,6 +332,7 @@ export async function sendMessage () {
     let time = new Date();
     let newTime = time.getDate() + " " + months[time.getMonth()] + " " + time.getFullYear() + ", " + time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
 
+    clearNoMessagesNotification();
     createReceiverMessages(message, newTime);
 
     let response = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/threads/messages", {
@@ -438,13 +439,17 @@ export function clearNoMessagesNotification () {
     }
 }
 
-export function clearThread (id) {
-    let threadMessages = document.getElementById(id);
-    let child = threadMessages.lastElementChild;
-    while (child) {
-        threadMessages.removeChild(child);
-        child = threadMessages.lastElementChild;
+export async function clearThread (idThread, idSenderInfo) {
+    function clearAllInfo (id){
+        let threadMessages = document.getElementById(id);
+        let child = threadMessages.lastElementChild;
+        while (child) {
+            threadMessages.removeChild(child);
+            child = threadMessages.lastElementChild;
+        }
     }
+    await clearAllInfo(idThread);
+    await clearAllInfo(idSenderInfo);
 }
 
 function createNotificationNoMessagesYet () {
@@ -595,6 +600,8 @@ function createSenderMessages (text, time) {
         text: time
     }).createElement();
     senderTextWrapper.appendChild(senderTime);
+
+    messagesChat.scrollTop = messagesChat.scrollHeight;
 
 }
 
