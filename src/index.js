@@ -9,32 +9,15 @@ import {
     createPageMessages,
     createThread,
     getAllThreadMessages,
-    sendMessage
+    sendMessage,
+    getAllThreads
 } from "./scripts/create-pages/messages";
 import {createLoginPage} from "./scripts/create-pages/login";
 import {createSignUpPage} from "./scripts/create-pages/signup";
 import {createResetPage} from "./scripts/create-pages/reset-pass";
 import {setAuthToken} from "./scripts/create-pages/shared/header";
+import {createReportPage} from "./scripts/create-pages/report";
 
-/*async function ifLogined() {
-    let response = await fetch('https://geekhub-frontend-js-9.herokuapp.com/api/users/', {
-        headers: {
-            "x-access-token": localStorage.token
-        }
-    });
-
-    /!*if (response.status === 200) {
-        alert("You are signed in now")
-    }*!/
-
-    console.log(response);
-}
-
-window.onload = async function () {
-    if(localStorage.token) {
-        ifLogined();
-    }
-};*/
 
 if (window.location.href.match('messages.html')) {
     createPageMessages("messages-header", "messages-main");
@@ -49,12 +32,15 @@ if (window.location.href.match('messages.html')) {
                     current[0].className = current[0].className.replace(" messages-user_active", "");
                 }
                 this.className += " messages-user_active";
-                clearThread("messages-chatMessages", "messages-senderinfo");
-                clearNoMessagesNotification();
-                getAllThreadMessages(conversationClick[i].id);
+                async function messages () {
+                    await clearThread("messages-chatMessages", "messages-senderinfo");
+                    await clearNoMessagesNotification();
+                    await getAllThreadMessages(conversationClick[i].id);
+                }
+                messages();
             });
         }
-    }, 500);
+    }, 600);
 
     setTimeout(function() {
         let logOut = document.getElementById("header-menu__logout");
@@ -93,6 +79,8 @@ if (window.location.href.match('messages.html')) {
             startThreadBtn.addEventListener("click", function (click) {
                 click.preventDefault();
                 createThread();
+                clearThread("messages-chatMessages", "messages-senderinfo");
+                getAllThreads();
             })
         }
     })
@@ -140,6 +128,9 @@ if (window.location.href.match('signup.html')) {
                     if (validatePassword(password, 8, 40)) {
                         if (validateRepeatPassword(password, repeatPass)){
                             signUp(email,password,name);
+                            setTimeout(function () {
+                                window.location.href = "login.html";
+                            }, 300);
                         }
                     } else return false;
                 }
@@ -169,3 +160,25 @@ if (window.location.href.match('reset-pass.html')) {
         });
     }
 }
+
+if (window.location.href.match('report.html')) {
+    createReportPage("report-header", "report-main");
+
+}
+
+/*let btnContainer = document.getElementById("sidebar-nav");
+
+// Get all buttons with class="btn" inside the container
+let btns = btnContainer.getElementsByClassName("sidebar-nav__link-img");
+
+
+// Loop through the buttons and add the active class to the current/clicked button
+for (let i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function() {
+        let current = document.getElementsByClassName("sidebar-nav_active");
+        if (current.length > 0) {
+            current[0].className = current[0].className.replace(" sidebar-nav_active", "");
+        }
+        this.className += " sidebar-nav_active";
+    });
+}*/

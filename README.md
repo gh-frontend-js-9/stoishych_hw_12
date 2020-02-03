@@ -1,6 +1,7 @@
 # stoishych_hw_12
 
 site: https://stoishych.netlify.com/src/pages/login.html
+https://stoishych.netlify.com/src/pages/report.html
 test accs: 
 1. fortest@gmail.com
 pass: Qwer123410

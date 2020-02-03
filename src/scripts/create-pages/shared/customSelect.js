@@ -7,11 +7,13 @@ export function createSelect () {
         /* For each element, create a new DIV that will act as the selected item: */
         a = document.createElement("DIV");
         a.setAttribute("class", "select-selected");
+        a.setAttribute("id", "select-selected");
         a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
         x[i].appendChild(a);
         /* For each element, create a new DIV that will contain the option list: */
         b = document.createElement("DIV");
         b.setAttribute("class", "select-items select-hide");
+        b.setAttribute("id", "select-items");
         for (j = 1; j < selElmnt.length; j++) {
             /* For each option in the original select element,
             create a new DIV that will act as an option item: */

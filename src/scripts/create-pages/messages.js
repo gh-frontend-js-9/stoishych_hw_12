@@ -3,6 +3,7 @@ import {createSidebarNav} from "./shared/sidebarNav";
 import {createSelect, closeAllSelect} from "./shared/customSelect";
 import {HTMLRender} from "./createPageClass";
 
+let allThreadsInGlobal;
 export function createPageMessages (headerMessages, mainMessages) {
 
     /*header*/
@@ -12,6 +13,10 @@ export function createPageMessages (headerMessages, mainMessages) {
     /*sidebarNav*/
     createSidebarNav(mainMessages);
     /*end of sidebarNav*/
+
+    //changing sidebar active element
+    let sidebarImg = document.getElementById("sidebar-messages");
+    sidebarImg.className += " sidebar-nav_active";
 
     /*messages menu*/
 
@@ -119,114 +124,18 @@ export function createPageMessages (headerMessages, mainMessages) {
 
     const messagesUsersContainer = new HTMLRender({
         tag: "section",
-        class: "messages-users"
+        class: "messages-users",
+        id: "messages-users"
     }).createElement();
     messagesChatWindow.appendChild(messagesUsersContainer);
 
     const messagesUsersWrapper = new HTMLRender({
         tag: "div",
-        class:  "messages-users__wrapper custom-scrollbar"
+        class:  "messages-users__wrapper custom-scrollbar",
+        id: "messages-users__wrapper"
     }).createElement();
 
     messagesUsersContainer.appendChild(messagesUsersWrapper);
-
-
-
-    const createMessagesUsers = (name, date, message, uniqueId) => {
-
-        //creating wrapper for user
-        const messagesUserWrapper = new HTMLRender({
-            tag: "div",
-            class: "messages-user",
-            id: uniqueId
-        }).createElement();
-        messagesUsersWrapper.appendChild(messagesUserWrapper);
-
-        //creating wrapper for user avatar, name, time
-        const messagesUserWrapperText = new HTMLRender({
-            tag: "div",
-            class: "messages-user__wrapper"
-        }).createElement();
-        messagesUserWrapper.appendChild(messagesUserWrapperText);
-
-
-        //creating avatar of user in recent messages
-        const messagesUserAvatar = new HTMLRender({
-            tag: "img",
-            class: "messages-user__avatar",
-            src: "../assets/images/users-avatar/photo-3.png"
-        }).createElement();
-        messagesUserWrapperText.appendChild(messagesUserAvatar);
-
-        //creating name of user in recent messages
-        const messagesUserName = new HTMLRender({
-            tag: "h2",
-            class: "messages-user__name",
-            text: name
-        }).createElement();
-        messagesUserWrapperText.appendChild(messagesUserName);
-
-        //creating time of last message
-        const messagesUserTime = new HTMLRender({
-            tag: "h3",
-            class: "messages-user__time",
-            text: date
-        }).createElement();
-        messagesUserWrapperText.appendChild(messagesUserTime);
-
-        //creating text of recent message
-        const messagesUserLastText = new HTMLRender({
-            tag: "p",
-            class: "messages-user__text",
-            text: message
-        }).createElement();
-        messagesUserWrapper.appendChild(messagesUserLastText);
-
-    };
-
-
-
-    async function getAllThreads () {
-        let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',	'November', 'December'];
-
-        let requestOptions = {
-            method: 'GET',
-            headers: {
-                "Authorization": localStorage.token
-            },
-            redirect: 'follow'
-        };
-
-        let response = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/threads", requestOptions);
-        let threads = await response.json();
-        console.log(threads);
-
-        //TODO: make class for requests, responsive
-        
-        let name;
-        let message;
-        let date, newSplitString, newDate;
-        for (let i = threads.length - 1; i >= 0 ; i--) {
-            for (let j = threads[i].users.length - 1; j >= 0 ; j--) {
-
-                if (threads[i].users[j]._id !== localStorage.currentUser) {
-                    name = threads[i].users[j].name;
-                }
-                if (threads[i].message !== null) {
-                    message = threads[i].message.body;
-                } else {
-                    message = "";
-                }
-                date = threads[i].updated_at.slice(0,10);
-                newSplitString = new Date(date);
-                newDate = newSplitString.getDate() + " " + months[newSplitString.getMonth()];
-
-            }
-            let uniqueId = threads[i]._id;
-            createMessagesUsers(name, newDate, message, uniqueId);
-            localStorage.setItem(`_id${i}`, threads[i]._id);
-        }
-    }
 
     setTimeout(getAllThreads, 100);
 
@@ -296,6 +205,108 @@ export function createPageMessages (headerMessages, mainMessages) {
     inputMessageWrapper.appendChild(inputMessageButton);
 }
 
+export async function getAllThreads () {
+    let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',	'November', 'December'];
+
+    let requestOptions = {
+        method: 'GET',
+        headers: {
+            "Authorization": localStorage.token
+        },
+        redirect: 'follow'
+    };
+
+    let response = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/threads", requestOptions);
+    let threads = await response.json();
+    allThreadsInGlobal = threads;
+    console.log(threads);
+
+    //TODO: make class for requests, responsive
+    if (threads.length > 0) {
+        let name;
+        let message;
+        let date, newSplitString, newDate;
+        for (let i = threads.length - 1; i >= 0 ; i--) {
+            for (let j = threads[i].users.length - 1; j >= 0 ; j--) {
+
+                if (threads[i].users[j]._id !== localStorage.currentUser) {
+                    name = threads[i].users[j].name;
+                }
+                if (threads[i].message !== null) {
+                    message = threads[i].message.body;
+                } else {
+                    message = "";
+                }
+                date = threads[i].updated_at.slice(0,10);
+                newSplitString = new Date(date);
+                newDate = newSplitString.getDate() + " " + months[newSplitString.getMonth()];
+
+            }
+            let uniqueId = threads[i]._id;
+            createMessagesUsers(name, newDate, message, uniqueId);
+            localStorage.setItem(`_id${i}`, threads[i]._id);
+        }
+    } else {
+        setTimeout(function () {
+            createNotificationNoThreadsYet();
+        }, 100);
+    }
+
+}
+
+function createMessagesUsers (name, date, message, uniqueId)  {
+    const messagesUsersWrapper = document.getElementById("messages-users__wrapper");
+
+    //creating wrapper for user
+    const messagesUserWrapper = new HTMLRender({
+        tag: "div",
+        class: "messages-user",
+        id: uniqueId
+    }).createElement();
+    messagesUsersWrapper.appendChild(messagesUserWrapper);
+
+    //creating wrapper for user avatar, name, time
+    const messagesUserWrapperText = new HTMLRender({
+        tag: "div",
+        class: "messages-user__wrapper"
+    }).createElement();
+    messagesUserWrapper.appendChild(messagesUserWrapperText);
+
+
+    //creating avatar of user in recent messages
+    const messagesUserAvatar = new HTMLRender({
+        tag: "img",
+        class: "messages-user__avatar",
+        src: "../assets/images/users-avatar/photo-3.png"
+    }).createElement();
+    messagesUserWrapperText.appendChild(messagesUserAvatar);
+
+    //creating name of user in recent messages
+    const messagesUserName = new HTMLRender({
+        tag: "h2",
+        class: "messages-user__name",
+        text: name
+    }).createElement();
+    messagesUserWrapperText.appendChild(messagesUserName);
+
+    //creating time of last message
+    const messagesUserTime = new HTMLRender({
+        tag: "h3",
+        class: "messages-user__time",
+        text: date
+    }).createElement();
+    messagesUserWrapperText.appendChild(messagesUserTime);
+
+    //creating text of recent message
+    const messagesUserLastText = new HTMLRender({
+        tag: "p",
+        class: "messages-user__text",
+        text: message
+    }).createElement();
+    messagesUserWrapper.appendChild(messagesUserLastText);
+
+}
+
 export async function createThread () {
     let id = prompt("Put user id to start thread");
     let userId = JSON.stringify({"user":{"_id":`${id}`}});
@@ -363,15 +374,14 @@ export async function getAllThreadMessages (threadId) {
     let response = await fetch(`https://geekhub-frontend-js-9.herokuapp.com/api/threads/messages/${id}`, requestOptions);
     let threadMessages = await response.json();
 
-
-    console.log(threadMessages);
+    let userObj = allThreadsInGlobal.find(id => id._id === threadId);
     if (threadMessages.length !== 0) {
         let receiverId, senderId;
-        for (let i = 0; i < threadMessages.length; i++) {
-            if (threadMessages[i].user._id === localStorage.currentUser) {
+        for (let i = 0; i < userObj.users.length; i++) {
+            if (userObj.users[i]._id === localStorage.currentUser) {
                 receiverId = localStorage.currentUser;
             } else {
-                senderId = threadMessages[i].user._id;
+                senderId = userObj.users[i]._id;
             }
         }
 
@@ -395,40 +405,52 @@ export async function getAllThreadMessages (threadId) {
             }
         }
 
-        let requestOptions = {
-            method: 'GET',
-            headers: {
-                "x-access-token": localStorage.token
-            },
-            redirect: 'follow'
-        };
-
-        let responseUser = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/users/all", requestOptions);
-        let responseSenderInfo = await responseUser.json();
-
-        let senderInfo = responseSenderInfo.find(item => item._id === senderId);
-
-            if(senderInfo) {
-                let name = senderInfo.name;
-                let email = senderInfo.email;
-                let position = senderInfo.position;
-                let description = senderInfo.description;
-                let phone = senderInfo.phone;
-                let address = senderInfo.address;
-                let organization = senderInfo.organization;
-
-                document.getElementById("messages-senderinfo").style.width = 100 + "%";
-                createSenderInfo(name, email, position, description, phone, address, organization);
-            } else if (!senderId) {
-                document.getElementById("messages-senderinfo").style.width = 0 + "%";
-            }
+        getSenderInformation(senderId);
         document.querySelector(".messages-chat__inputwrap").style.display = "flex";
 
     } else {
+        let receiverId, senderId;
+        for (let i = 0; i < userObj.users.length; i++) {
+            if (userObj.users[i]._id === localStorage.currentUser) {
+                receiverId = localStorage.currentUser;
+            } else {
+                senderId = userObj.users[i]._id;
+            }
+        }
         createNotificationNoMessagesYet();
+        getSenderInformation(senderId);
         document.querySelector(".messages-chat__inputwrap").style.display = "flex";
     }
 
+}
+
+async function getSenderInformation (senderId) {
+    let requestOptions = {
+        method: 'GET',
+        headers: {
+            "x-access-token": localStorage.token
+        },
+        redirect: 'follow'
+    };
+
+    let responseUser = await fetch("https://geekhub-frontend-js-9.herokuapp.com/api/users/all", requestOptions);
+    let allUsers = await responseUser.json();
+    console.log(allUsers);
+
+    let senderInfo = allUsers.find(item => item._id === senderId);
+
+    if(senderInfo) {
+        let name = senderInfo.name;
+        let email = senderInfo.email;
+        let position = senderInfo.position;
+        let description = senderInfo.description;
+        let phone = senderInfo.phone;
+        let address = senderInfo.address;
+        let organization = senderInfo.organization;
+
+        document.getElementById("messages-senderinfo").style.width = 100 + "%";
+        createSenderInfo(name, email, position, description, phone, address, organization);
+    }
 }
 
 export function clearNoMessagesNotification () {
@@ -439,8 +461,8 @@ export function clearNoMessagesNotification () {
     }
 }
 
-export async function clearThread (idThread, idSenderInfo) {
-    function clearAllInfo (id){
+export function clearThread (idThread, idSenderInfo) {
+    function clearAllInfo (id) {
         let threadMessages = document.getElementById(id);
         let child = threadMessages.lastElementChild;
         while (child) {
@@ -448,8 +470,8 @@ export async function clearThread (idThread, idSenderInfo) {
             child = threadMessages.lastElementChild;
         }
     }
-    await clearAllInfo(idThread);
-    await clearAllInfo(idSenderInfo);
+    clearAllInfo(idThread);
+    clearAllInfo(idSenderInfo);
 }
 
 function createNotificationNoMessagesYet () {
@@ -462,6 +484,18 @@ function createNotificationNoMessagesYet () {
         text: "Write message to start conversation"
     }).createElement();
     chatWindow.appendChild(noMessagesYet);
+}
+
+function createNotificationNoThreadsYet () {
+    const threadWindow = document.getElementById("messages-users");
+
+    const noThreadsYet = new HTMLRender({
+        tag: "h2",
+        class: "messages-chat__nothing",
+        id: "messages-threads__nothing",
+        text: "Add a new conversation to start messaging"
+    }).createElement();
+    threadWindow.appendChild(noThreadsYet);
 }
 
 function createSenderInfo (name, email, position, description, phone, adress, organization) {

@@ -283,6 +283,9 @@
   background-color: #2b2d3c;
   text-align: center;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .messages-senderinfo::-webkit-scrollbar,
@@ -291,6 +294,12 @@
   display: none;
 }
 
+.messages-senderinfo__contact, .messages-senderinfo__contact-text,
+.messages-senderinfo__describe, .messages-senderinfo__name,
+.messages-senderinfo__position {
+  overflow-wrap: break-word;
+  max-width: 70%;
+}
 
 .messages-senderinfo__avatar {
   margin-top: 60px;

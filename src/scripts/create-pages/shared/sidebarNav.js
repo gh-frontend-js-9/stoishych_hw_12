@@ -14,11 +14,12 @@ export function createSidebarNav (mainId) {
     sidebarNav.setAttribute("class", "sidebar-nav");*/
     const sidebarNav = new HTMLRender({
         tag: "nav",
-        class: "sidebar-nav"
+        class: "sidebar-nav",
+        id: "sidebar-nav"
     }).createElement();
     sidebar.appendChild(sidebarNav);
 
-    const createLinks = (link, image) => {
+    const createLinks = (link, image, id) => {
         const sidebarLink = new HTMLRender({
             tag: "a",
             href: link,
@@ -28,7 +29,8 @@ export function createSidebarNav (mainId) {
         const sidebarLinkImage = new HTMLRender({
             tag: "img",
             src: image,
-            class: "sidebar-nav__link-img"
+            class: "sidebar-nav__link-img",
+            id: id
         }).createElement();
         /*const sidebarLink = document.createElement("a");
         const sidebarLinkImage = document.createElement("img");
@@ -44,13 +46,13 @@ export function createSidebarNav (mainId) {
 
     };
 
-    const sidebarLinks = ["#", "#", "#", "#", "#"];
-    const sidebarImages = ["../assets/images/home.png", "../assets/images/menu.png", "../assets/images/trending-up.png", "../assets/images/messages.png", "../assets/images/account-multiple.png"];
-
+    const sidebarLinks = ["#", "#", "report.html", "messages.html", "#"];
+    const sidebarImages = ["../assets/images/sidebar/home.png", "../assets/images/sidebar/menu.png", "../assets/images/sidebar/trending-up.png", "../assets/images/sidebar/messages.png", "../assets/images/sidebar/account-multiple.png"];
+    const sidebarId = ["sidebar-home", "sidebar-menu", "sidebar-report", "sidebar-messages", "sidebar-multiple"];
 
     for (let i = 0; i < sidebarImages.length; i++ ) {
-        createLinks(sidebarLinks[i], sidebarImages[i]);
+        createLinks(sidebarLinks[i], sidebarImages[i], sidebarId[i]);
     }
 
-
 }
+
