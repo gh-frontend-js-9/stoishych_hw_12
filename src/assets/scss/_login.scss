@@ -1,0 +1,58 @@
+.authorization {
+    background-color: #2f3242;
+    width: 100%;
+}
+
+.authorization-wrapper {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+
+}
+
+.authorization__text {
+    font-size: 36px;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.login-email {
+    max-width: 100px;
+    width: 100%;
+}
+
+.incorrect-data {
+    color: red;
+    display: none;
+}
+
+.authorization-link {
+    text-decoration: none;
+    color: white;
+}
+
+.authorization-form {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.login-form__label {
+    color: white;
+}
+
+.form__submit {
+    margin-top: 35px;
+    max-width: 150px;
+    width: 100%;
+    padding: 10px 0 10px 0;
+    border-radius: 18px;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    margin-bottom: 35px;
+}

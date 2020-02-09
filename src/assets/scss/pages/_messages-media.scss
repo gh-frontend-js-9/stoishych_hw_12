@@ -1,0 +1,21 @@
+@media screen and (max-width: 1440px) {
+  .messages-user{
+    padding: 20px 20px 20px 30px;
+  }
+  .messages-user__name {
+    max-width: 130px;
+  }
+  .messages-user__time {
+    text-align: right;
+    max-width: 60px;
+    width: 100%;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .messages-user{
+    padding: 20px 20px 20px 30px;
+  }
+  .messages-senderinfo {
+    display: none;
+  }
+}
